@@ -1,6 +1,10 @@
 # GLOBAL DEFORESTATION; ITS RELATIONSHIP WITH INCOME LEVELS AND REGIONAL DISPARITIES.
 
 
+
+![Deforestation-1](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/3493a708-201a-40d0-b9c0-fe71d5ad3bd7)
+
+
 # Overview
 
 This data analysis project aims at exploring  the relationship between income levels, and regional disparities of  countries involved in global deforestation.
