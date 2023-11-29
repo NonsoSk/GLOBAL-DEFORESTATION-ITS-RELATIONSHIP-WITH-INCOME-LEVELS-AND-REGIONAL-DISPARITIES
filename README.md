@@ -290,6 +290,22 @@ IMAGE
 
 From this, we can observe that the region with the highest total forest area is the “world”.
 
+Recommendations and Conclusions
+•	From our analysis, it is clear that there are 219 countries practicing deforestation out of about 228 countries in the world. This is an implication that the emission of carbon is on the increase since the forests and trees that absorb carbon dioxide and act as natural carbon sink are greatly threatened and cut down.
+Considering this high involvement in the practice of deforestation, I`ll recommend that a global program like the REDD (Reducing emissions from deforestation and forest degradation) be introduced to all practicing countries and region.
+•	Considering that two regions from our analysis came from Africa. That is, the sub-Saharan Africa which has 48 countries in that region and then middle east & North Africa region which has 21 countries, we can say thus that Africa has a total of 69 countries involved in deforestation. 
+I noticed then that Africa as a continent has the highest number of countries involved in deforestation. As much as this has some economic benefits which are of course short-term, the long-term consequences on environment and ecosystem outweighs the gain especially for a developing continent like Africa.
+I thus recommend sustainable land use practices so as to maintain healthy global economy.
+•	The great number of countries generating high income and the very minimal number generating low income, says a whole lot about the commitment of countries in deforestation.
+If countries engage greatly in deforestation and make high income, I recommend then that the countries in the low-income group engage in agriculture after clearing forests. So as to match up with other countries involved in deforestation. this would go a long way in boosting revenue.
+•	I observed that the countries with the highest forest area do not generate the highest income. Generation of income is not dependent on total area. I recommend then the countries earning low should not use their small forest area as an excuse.
+•	I observed that the total forest area has minimal role in helping a country gerate greater income. I recommend then that countries with low forest areas focus on learning how to optimize and generate income instead of remaining in the low-income group.
+•	Lastly, I noticed that in the ranks of the highest total forest areas across the regions, Congo Republic of Sub-Saharan region as well as Iran Islamic republic of the middle east & North Africa region came as the least.
+This shows the size of Africa`s forest area when compared to other regions. I recommend then that for an effective economic growth in Africa, then she should engage also in other forest activities e.g.  tourism and recreation while still practicing deforestation.
+
+
+
+
 
 
 
