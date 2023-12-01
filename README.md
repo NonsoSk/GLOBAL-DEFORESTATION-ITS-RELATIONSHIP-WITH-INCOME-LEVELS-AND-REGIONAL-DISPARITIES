@@ -42,33 +42,45 @@ My goal is that by the completion of this project, we must have had a detailed u
 # Data sourcing
 
 I obtained the data by downloading the csv file from my drive and then imported into my database “PROJECT”, which I created using the syntax below:
-
-**CREATE DATABASE PROJECT;**
+```
+CREATE DATABASE PROJECT;
+```
 
 The data is a sample data of a public available datasets on deforestation, which has three tables (Forest area, land area and Regions), and provides data of  income levels, regional information, name of countries, country codes, total area and total forest area. After the importation, I cleaned the data then proceeded to writing queries and performing my analysis.
 
 # Data Transformation and cleaning
 
 The dataset I worked with did not really require much cleaning, so I first checked for null values. From our fact tables, only two columns from both tables (forest area table and land area table) have numerical values that can be checked so the syntax below was used.
+```
+SELECT FOREST_AREA_SQKM FROM FOREST_AREA WHERE FOREST_AREA_SQKM IS NULL;
+```
 
-**SELECT FOREST_AREA_SQKM FROM FOREST_AREA WHERE FOREST_AREA_SQKM IS NULL;**
-
-**SELECT TOTAL_AREA_SQ_MI FROM LAND_AREA WHERE TOTAL_AREA_SQ_MI IS NULL;** 
+```
+SELECT TOTAL_AREA_SQ_MI FROM LAND_AREA WHERE TOTAL_AREA_SQ_MI IS NULL;
+``` 
 
 After discovering that there were null values, there was need to fill them with the average of the column affected.
 Below is the syntax I employed in getting the average from the respective columns and tables.
 
-**SELECT ROUND (AVG (FOREST_AREA_SQKM), 0) FROM FOREST_AREA;**
+```
+SELECT ROUND (AVG (FOREST_AREA_SQKM), 0) FROM FOREST_AREA;
+```
 
-**SELECT ROUND (AVG (TOTAL_AREA_SQ_MI), 0) FROM LAND_AREA;**
+```
+SELECT ROUND (AVG (TOTAL_AREA_SQ_MI), 0) FROM LAND_AREA;
+```
 
 Then I proceeded to filling the null values with the syntax below:
 
-**UPDATE FOREST_AREA
-SET FOREST_AREA_SQKM = 391052 WHERE FOREST_AREA_SQKM IS NULL;**
+```
+UPDATE FOREST_AREA
+SET FOREST_AREA_SQKM = 391052 WHERE FOREST_AREA_SQKM IS NULL;
+```
 
-**UPDATE LAND_AREA
-SET TOTAL_AREA_SQ_MI= 457095 WHERE TOTAL_AREA_SQ_MI IS NULL;**
+```
+UPDATE LAND_AREA
+SET TOTAL_AREA_SQ_MI= 457095 WHERE TOTAL_AREA_SQ_MI IS NULL;
+```
 
 After this, I proceeded to analyzing my data.
 
@@ -96,29 +108,61 @@ In the first analysis, we set out to answer the question:
 **What are the total number of countries involved in deforestation?**
 To avoid repetition of countries since I was working with **5886** rows of data, I had to find distinctively the countries involved before counting them. The syntax below helped me achieve this:
 
-**SELECT DISTINCT(COUNTRY_NAME) FROM REGIONS;**
+```
+SELECT DISTINCT(COUNTRY_NAME) FROM REGIONS;
+```
 
-**SELECT COUNT (DISTINCT(COUNTRY_NAME)) FROM REGIONS;**
+```
+SELECT COUNT (DISTINCT(COUNTRY_NAME)) FROM REGIONS;
+```
 
 I was able to discover that there are **219** countries involved In deforestation. 
 
 It could be possible that all **219** countries came from a particular region which could hamper economic growth and uneven distribution of resources. To be sure of this, I sought out to check how many regions were involved in deforestation and how many countries each region covered.
 Below are the regions involved in deforestation.
-![REGION](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/d8ae6225-6fb3-4e8a-b830-ad94d003e408)
+
+|REGIONS|
+|------|
+|East Asia & Pacific|
+|Europe & Central Asia|
+|Latin America & Caribbean|
+|Middle East & North Africa|
+|North America|
+|South Asia|
+|Sub-Saharan Africa|
+|World  |
+
 
 The syntax below helped me arrive at this:
-**SELECT DISTINCT (REGION) FROM REGIONS;**
+```
+SELECT DISTINCT (REGION) FROM REGIONS;
+```
 
 I then counted these regions, using the below syntax, and discovered  that the regions involved in deforestation are (8)
 
-**SELECT COUNT (DISTINCT (REGION)) AS COUNT_OF_REGION FROM REGIONS;**
+```
+SELECT COUNT (DISTINCT (REGION)) AS COUNT_OF_REGION FROM REGIONS;
+```
 
 It was thus easier at this point to tell how many countries each of this eight (8) regions were made of.
 Using : 
 
-**SELECT REGION, COUNT (DISTINCT(COUNTRY_NAME)) AS NUMBER_OF_COUNTRIES FROM REGIONS GROUP BY REGION ORDER BY NUMBER_OF_COUNTRIES DESC;**
+```
+SELECT REGION, COUNT (DISTINCT(COUNTRY_NAME)) AS NUMBER_OF_COUNTRIES FROM REGIONS GROUP BY REGION ORDER BY NUMBER_OF_COUNTRIES DESC;
+```
 We Can see that from the image below, 
-![REGION BY COUNTRY SQL 2](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/f277ed21-b675-42f5-8f6e-22b519ac07e7)
+|REGION|NUMBER OF COUNTRIES|
+|------|-------------------|
+|Europe & Central Asia|	58|
+|Sub-Saharan Africa	|48|
+|Latin America & Caribbean|	42|
+|East Asia & Pacific	|38|
+|Middle East & North Africa	|21|
+|South Asia|	8|
+|North America	|3|
+|World|	1    |
+
+
 
 All 219 countries were spread across the regions with Europe having the highest number of countries practicing deforestation and then the world has the least (just one).
 
@@ -130,44 +174,90 @@ To get a very presentable and neat analysis, I had to round up the total_area_sq
 The following syntax helped me arrive at this.
 
 
- **SELECT ROUND (TOTAL_AREA_SQ_MI, 0) TOTAL_AREA_SQUARE_MI FROM LAND_AREA;**
+ ```
+SELECT ROUND (TOTAL_AREA_SQ_MI, 0) TOTAL_AREA_SQUARE_MI FROM LAND_AREA;
+```
 
- **ALTER TABLE LAND_AREA ADD TOTAL_AREA_SQUARE_MI INT;**
+ ```
+ALTER TABLE LAND_AREA ADD TOTAL_AREA_SQUARE_MI INT;
+```
 
-**UPDATE LAND_AREA
-SET TOTAL_AREA_SQUARE_MI= (ROUND (TOTAL_AREA_SQ_MI, 0)) FROM LAND_AREA;**
+```
+UPDATE LAND_AREA
+SET TOTAL_AREA_SQUARE_MI= (ROUND (TOTAL_AREA_SQ_MI, 0)) FROM LAND_AREA;
+```
 
 It was necessary that I use only one column for “total area”, throughout the remaining process of our analysis so I continued with the newly created column and so dropped the old column “total_area_sq_mi” with the syntax below:
 
- **ALTER TABLE LAND_AREA DROP COLUMN TOTAL_ARE_SQ_MI;**
+ ```
+ALTER TABLE LAND_AREA DROP COLUMN TOTAL_ARE_SQ_MI;
+```
 
 Having rounded up the entire column to be used, I proceeded to answering the question by first seeing the actual countries and the exact number of countries that have “total_area_sq_mi” between 75000 to 15000.
+| |COUNTRY NAME|
+|------|--------|
+|1| Belarus|
+|2|Burkina Faso|
+|3|Congo, Rep.|
+|4|Ecuador|
+|5|Finland|
+|6|Gabon|
+|7|Germany|
+|8|Ghana|
+|9|Greenland|
+|10|Guinea|
+|11|Guyana|
+|12|Italy|
+|13|Japan|
+|14|Lao PDR|
+|15|Malaysia|
+|16|New Zealand|
+|17|Norway|
+|18|Oman|
+|19|Philippines|
+|20|Poland|
+|21|Romania|
+|22|Uganda|
+|23|United Kingdom|
+|24|Vietnam|
+|25|Zimbabwe  |
 
-![SQL 3](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/f8aec5d5-3318-45b2-9056-d0a0d79653f2)
 
 I arrived at the result above using the syntax:
 
-**SELECT DISTINCT (COUNTRY_NAME) FROM
+```
+SELECT DISTINCT (COUNTRY_NAME) FROM
 (SELECT R.COUNTRY_NAME,TOTAL_AREA_SQUARE_MI,INCOME_GROUP FROM REGIONS R INNER JOIN LAND_AREA L ON R.COUNTRY_NAME=L.COUNTRY_NAME
-WHERE TOTAL_AREA_SQUARE_MI BETWEEN 75000 AND 150000) SETIG;**
+WHERE TOTAL_AREA_SQUARE_MI BETWEEN 75000 AND 150000) SETIG;
+```
  
 Thus, using the count function, I was able to find out that there are exactly **25** countries out of the **219** countries that have total area ranging from 75,000 to 150,000 square meter.
 
 I was able to solve this problem with the syntax below:
 
- **SELECT COUNT (DISTINCT (COUNTRY_NAME)) FROM
+ ```
+SELECT COUNT (DISTINCT (COUNTRY_NAME)) FROM
 (SELECT R.COUNTRY_NAME,TOTAL_AREA_SQUARE_MI,INCOME_GROUP FROM REGIONS R INNER JOIN LAND_AREA L ON R.COUNTRY_NAME=L.COUNTRY_NAME
- WHERE TOTAL_AREA_SQUARE_MI BETWEEN 75000 AND 150000) SETIG;**
+ WHERE TOTAL_AREA_SQUARE_MI BETWEEN 75000 AND 150000) SETIG;
+```
 
 At this point, it was easier then to show the “income group” of these **25** countries. 
 
 So, using:
 
-**SELECT INCOME_GROUP, count (DISTINCT (COUNTRY_NAME)) AS COUNTRIES FROM
+```
+SELECT INCOME_GROUP, count (DISTINCT (COUNTRY_NAME)) AS COUNTRIES FROM
 (SELECT R.COUNTRY_NAME,TOTAL_AREA_SQUARE_MI,INCOME_GROUP FROM REGIONS R INNER JOIN LAND_AREA L ON R.COUNTRY_NAME=L.COUNTRY_NAME
-WHERE TOTAL_AREA_SQUARE_MI BETWEEN 75000 AND 150000) SETIG GROUP BY INCOME_GROUP ORDER BY COUNTRIES DESC;** 
+WHERE TOTAL_AREA_SQUARE_MI BETWEEN 75000 AND 150000) SETIG GROUP BY INCOME_GROUP ORDER BY COUNTRIES DESC;
+``` 
 
 I discovered that 10 countries had high income, 6 countries had upper middle income, 5 were in the lower middle income group and 4 were of low income as shown in the table below:
+|INCOME GROUP|NUMBER OF COUNTRIES|
+|-------|--------|
+|High income	|10|
+|Upper middle income	6||
+|Lower middle income	|5|
+|Low income|	4  |
 ![NUMBER 4](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/4edea6c7-e69e-4c23-b9fe-2f176beb1af7)
 
 Progressively, the third question to be answered was: **Calculate average area in square miles for countries in the 'upper middle-income region'. Compare the result with the rest of the income categories.**
