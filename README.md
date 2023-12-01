@@ -255,18 +255,23 @@ I discovered that 10 countries had high income, 6 countries had upper middle inc
 |INCOME GROUP|NUMBER OF COUNTRIES|
 |-------|--------|
 |High income	|10|
-|Upper middle income	6||
+|Upper middle income	|6|
 |Lower middle income	|5|
 |Low income|	4  |
-![NUMBER 4](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/4edea6c7-e69e-4c23-b9fe-2f176beb1af7)
 
-Progressively, the third question to be answered was: **Calculate average area in square miles for countries in the 'upper middle-income region'. Compare the result with the rest of the income categories.**
+
+Progressively, the third question to be answered was: 
+**Calculate average area in square miles for countries in the 'upper middle-income region'. Compare the result with the rest of the income categories.**
 
 It was necessary before answering any question, to know how many income groups were in our data. So I used the syntax:
 
-**SELECT DISTINCT (INCOME_GROUP) FROM REGIONS;**
+```
+SELECT DISTINCT (INCOME_GROUP) FROM REGIONS;
+```
 
-**SELECT COUNT (DISTINCT (INCOME_GROUP)) FROM REGIONS;**
+```
+SELECT COUNT (DISTINCT (INCOME_GROUP)) FROM REGIONS;
+```
 
 And here we discovered that there are **five (5)** income groups. This means that our concern would be to compare the result of 'upper middle-income region' with the result of the other 4 income groups.
 
@@ -274,14 +279,16 @@ The question to be answered, implied that I get the average area in square miles
 my first concern was with calculating the average area in square miles for countries in the 'upper middle-income region'. 
 To this end, I used the syntax below:
 
-**SELECT AVG (TOTAL_AREA_SQUARE_MI) AVERAGE_OF_UPPER_MIDDLE_INCOME FROM (SELECT L.COUNTRY_NAME,INCOME_GROUP,TOTAL_AREA_SQUARE_MI
+```
+SELECT AVG (TOTAL_AREA_SQUARE_MI) AVERAGE_OF_UPPER_MIDDLE_INCOME FROM (SELECT L.COUNTRY_NAME,INCOME_GROUP,TOTAL_AREA_SQUARE_MI
 FROM REGIONS R JOIN LAND_AREA L ON R.COUNTRY_NAME = L.COUNTRY_NAME 
-WHERE INCOME_GROUP = 'UPPER MIDDLE INCOME') DATUM;**
+WHERE INCOME_GROUP = 'UPPER MIDDLE INCOME') DATUM;
+```
 
 Which resulted in: 
-
-![AVERAGE 5](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/7f24aa72-28d3-4828-8558-838e27cf730c)
-
+|AVERAGE OF UPPER MIDDLE INCOME|
+|-------|
+|390072.339886206|
 
 I repeated same action only changing the information in the “where” clause, replacing it with the particular income group I intend to calculate.
 Moving further, I shall tabulate this for proper understanding.
@@ -291,9 +298,11 @@ It was proper to see how many countries fell under the “upper middle income gr
 
 I calculated that of the upper middle-income group (i.e., the number of countries that have upper middle income) using:
 
-**SELECT COUNT (DISTINCT (COUNTRY_NAME)) 
+```
+SELECT COUNT (DISTINCT (COUNTRY_NAME)) 
 FROM (SELECT L.COUNTRY_NAME,INCOME_GROUP,TOTAL_AREA_SQUARE_MI 
-FROM REGIONS R JOIN LAND_AREA L ON R.COUNTRY_NAME = L.COUNTRY_NAME WHERE INCOME_GROUP = 'UPPER MIDDLE INCOME')NUMBER;**
+FROM REGIONS R JOIN LAND_AREA L ON R.COUNTRY_NAME = L.COUNTRY_NAME WHERE INCOME_GROUP = 'UPPER MIDDLE INCOME')NUMBER;
+```
 
 I repeated the action to find out the number of countries in the income groups only changing the “where” clause to fill in the appropriate group at each point.
 
@@ -307,14 +316,23 @@ Having established that the average area in square miles for countries in the 'u
 Using this syntax:
 
 
-**WITH COMPARE AS
+```
+WITH COMPARE AS
 (SELECT L.COUNTRY_NAME, INCOME_GROUP, TOTAL_AREA_SQUARE_MI 
 FROM REGIONS R   JOIN LAND_AREA L ON R.COUNTRY_NAME = L.COUNTRY_NAME)
 SELECT COUNT (DISTINCT (COUNTRY_NAME)) AS NO_OF_COUNTRIES, INCOME_GROUP, AVG (TOTAL_AREA_SQUARE_MI) AVERAGE 
-FROM COMPARE GROUP BY INCOME_GROUP ORDER BY AVERAGE DESC;**
+FROM COMPARE GROUP BY INCOME_GROUP ORDER BY AVERAGE DESC;
+```
+|NUMBER OF COUNTRIES|INCOME GROUP|AVERAGE|
+|---|---|---|
+|1	|NULL|	49169980.5925926|
+|55|	Upper middle income|	390072.339886206|
+|79|	High income	|186746.878479506|
+|44	|Lower middle income|	174123.775905583|
+|33	|Low income	|170275.702676279|
+
 
 The result of our query is
-![COMPARE 11](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/0bfcaec0-5b33-4ecc-acd6-9adf37e0dc91)
 
 Very noticeable is the fact that countries with upper middle income, has a fair area in sq miles on average when compared to other income groups. It is second to “NULL”.
 However, it is worrisome that these countries (in the “Null income group” as well as the “upper middle income”) do not generate high income despite having the highest and second highest average respectively. 
@@ -330,24 +348,37 @@ We also saw that on average in terms of area in square miles, they (high income 
  
 Moving straight to the question at hand, we used the syntax :
 
-**SELECT ROUND (SUM (FOREST_AREA_SQKM),0) SUM_OF_HIGH_INCOME_GROUP FROM (SELECT F.COUNTRY_NAME,INCOME_GROUP,FOREST_AREA_SQKM
+```
+SELECT ROUND (SUM (FOREST_AREA_SQKM),0) SUM_OF_HIGH_INCOME_GROUP FROM (SELECT F.COUNTRY_NAME,INCOME_GROUP,FOREST_AREA_SQKM
 FROM FOREST_AREA F JOIN REGIONS R ON F.COUNTRY_NAME = R.COUNTRY_NAME 
-WHERE INCOME_GROUP = 'HIGH INCOME') PROJECT;**
+WHERE INCOME_GROUP = 'HIGH INCOME') PROJECT;
+```
 
 to discover that the total forest area in square km for countries in the 'high income' group
-is ![SUM OF HIGH INCOME](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/321c53a6-3518-4c24-9908-ab1a2c5c9acb)
+is
+|SUM OF HIGH INCOME GROUP|
+|----|
+|280145167|
 
 
 The table below, would help us compare the total forest area in square km for countries in the 'high income' with those in other income groups.
 
-![GUIDE](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/7613fd4f-8ead-41f2-8088-09393640dd9a)
+|INCOME GROUP|TOTAL|
+|-----|-----|
+| NULL	|1093577960|
+|Upper middle income|	537371307|
+|High income|	280145167|
+|Lower middle income	|157441731|
+|Low income|	104641151 |
 
   
 We were able to get the above table with this syntax:
-**WITH SOLUTION AS
+```
+WITH SOLUTION AS
 (SELECT F.COUNTRY_NAME,INCOME_GROUP,FOREST_AREA_SQKM
 FROM FOREST_AREA F JOIN REGIONS R ON F.COUNTRY_NAME = R.COUNTRY_NAME )
-SELECT INCOME_GROUP, ROUND (SUM (FOREST_AREA_SQKM), 0) TOTAL FROM SOLUTION GROUP BY INCOME_GROUP  ORDER BY TOTAL DESC;**
+SELECT INCOME_GROUP, ROUND (SUM (FOREST_AREA_SQKM), 0) TOTAL FROM SOLUTION GROUP BY INCOME_GROUP  ORDER BY TOTAL DESC;
+```
 
 
 From the table above, We can observe that 79 countries despite having total forest area less than the countries ranking first and second in total forest  area, they (these 79 countries) still found their way to generate the highest income.
@@ -356,16 +387,23 @@ Generally therefore, countries in the high income group do not have as much tota
 
 As a way of gaining further insights, it is proper to know at least the top 5 countries with highest total forest area.
 This is to help us ascertain if actually countries with the highest total forest area are majorly countries in the upper middle income groups.
-
-![Top 5 countries](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/e393da55-cb6f-4518-bbb9-9e9c68cc5d95)
+|COUNTRY NAME|TOTAL FOREST AREA|TOP FOREST RANKING COUNTRIES|INCOME GROUP|
+|---|---|---|---|
+| World	|1093577960	|1|	NULL|
+|Russian Federation|	218980154.5	|2|	Upper middle income|
+|Brazil|139155605|	3|	Upper middle income|
+|Canada	|93866359|	4|	High income|
+|United States|	82480350|	5	|High income  |
 
 We were able to get this using the syntax below:
 
-**SELECT * FROM (SELECT TOP 5 R.COUNTRY_NAME, SUM(FOREST_AREA_SQKM) AS TOTAL_FOREST_AREA, 
+```
+SELECT * FROM (SELECT TOP 5 R.COUNTRY_NAME, SUM(FOREST_AREA_SQKM) AS TOTAL_FOREST_AREA, 
 RANK () OVER(ORDER BY SUM(FOREST_AREA_SQKM) DESC) AS TOP_FOREST_RANKING_COUNTRIES, INCOME_GROUP
 FROM REGIONS R JOIN FOREST_AREA F ON R.COUNTRY_NAME = F.COUNTRY_NAME
 GROUP BY R.COUNTRY_NAME, INCOME_GROUP ) TOP_FOREST_RANKING_COUNTRIES
-ORDER BY TOTAL_FOREST_AREA DESC;**
+ORDER BY TOTAL_FOREST_AREA DESC;
+```
 
 It is evident from the table that the country “world” which is of the “Null” income group has the highest forest area in square miles and the second largest country (Russian Federation) as well as the third (Brazil) by total forest area, are of the upper middle income group. While other countries in the high income group followed suit.
 
@@ -376,13 +414,26 @@ Finally, the last analysis had to do with providing an answer to the question:
 
 here I applied windows function and below is the syntax I used:
 
-**WITH FINAL AS(SELECT  R.COUNTRY_NAME, REGION, FOREST_AREA_SQKM AS TOTAL_FOREST_AREA,ROW_NUMBER () OVER
+```
+WITH FINAL AS(SELECT  R.COUNTRY_NAME, REGION, FOREST_AREA_SQKM AS TOTAL_FOREST_AREA,ROW_NUMBER () OVER
 (PARTITION BY REGION ORDER BY FOREST_AREA_SQKM  DESC) RANKING
 FROM REGIONS R JOIN FOREST_AREA F ON R.COUNTRY_NAME = F.COUNTRY_NAME)
-SELECT COUNTRY_NAME, REGION, TOTAL_FOREST_AREA FROM FINAL WHERE RANKING = '1' ORDER BY TOTAL_FOREST_AREA DESC;**
+SELECT COUNTRY_NAME, REGION, TOTAL_FOREST_AREA FROM FINAL WHERE RANKING = '1' ORDER BY TOTAL_FOREST_AREA DESC;
+```
 
 The result of our query is displayed in the image below
-![FINALS](https://github.com/NonsoSk/GLOBAL-DEFORESTATION-ITS-RELATIONSHIP-WITH-INCOME-LEVELS-AND-REGIONAL-DISPARITIES/assets/147613828/3a48edfc-08e2-405c-80e2-0089809b0405)
+
+|COUNTRY NAME|REGION|TOTAL FOREST AREA|
+|-----|---|----|
+| World|	World	|41282696|
+|Russian Federation|	Europe & Central Asia	|8151356|
+|Brazil|	Latin America & Caribbean|	5467050|
+|Canada	|North America|	3482730|
+|China|	East Asia & Pacific|	2098635|
+|Congo, Dem. Rep.|	Sub-Saharan Africa|	1603630|
+|India	|South Asia|	708604|
+|Iran, Islamic Rep.|	Middle East & North Africa	|106919.8046875  |
+
 
 From this, we can observe that the region with the highest total forest area is the “world”.
 
